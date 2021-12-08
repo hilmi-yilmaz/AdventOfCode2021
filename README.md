@@ -11,3 +11,13 @@
 ## Source files
 
 You can find the source files in _src/_. They are divided per day.
+
+## Run
+
+You can run:
+
+```sh
+cargo run
+```
+
+This will build and run the program. It outputs all my answers.
