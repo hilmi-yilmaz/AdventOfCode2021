@@ -18,11 +18,13 @@ use day04::day04;
 use day05::day05;
 
 fn main() {
-	// day01("inputs/day01/part1_input");
-	// day02("inputs/day02/part1_input", "inputs/day02/part2_input");
-    // day03("inputs/day03/part1_input");
-	// day04("inputs/day04/part1_input");
-	// day04("inputs/day04/input_test");
-	// day04("inputs/day04/part1_input");
-	day05("inputs/day05/part1_input");
+	day01("inputs/day01/part1_input");
+	day02("inputs/day02/part1_input", "inputs/day02/part2_input");
+    day03("inputs/day03/part1_input");
+	day04("inputs/day04/part1_input");
+	day04("inputs/day04/input_test");
+	day04("inputs/day04/part1_input");
+	//day05("inputs/day05/part1_input");
+	day05("inputs/day05/part2_input");
+	
 }
