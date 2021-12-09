@@ -53,29 +53,29 @@ fn format_input_data(input_data: Vec<String>) -> Vec<Line> {
 											.collect::<Vec<Line>>()
 }
 
-fn get_min_and_max_values(lines_vec: &Vec<Line>) -> (usize, usize, usize, usize) {
+fn get_min_and_max_values(lines_vec: &Vec<Line>) -> (usize, usize) {
 
-	let x_min: usize = lines_vec.iter()
-								.map(|line| {if line.start.x > line.end.x {line.end.x} else {line.start.x}})
-								.min()
-								.unwrap().try_into().unwrap(); // try_into convert u32 into usize and panics if it doesn't fit.
+	// let x_min: usize = lines_vec.iter()
+	// 							.map(|line| {if line.start.x > line.end.x {line.end.x} else {line.start.x}})
+	// 							.min()
+	// 							.unwrap().try_into().unwrap(); // try_into convert u32 into usize and panics if it doesn't fit.
 
-	let y_min: usize = lines_vec.iter()
-								.map(|line| {if line.start.y > line.end.y {line.end.y} else {line.start.y}})
-								.min()
-								.unwrap().try_into().unwrap();
+	// let y_min: usize = lines_vec.iter()
+	// 							.map(|line| {if line.start.y > line.end.y {line.end.y} else {line.start.y}})
+	// 							.min()
+	// 							.unwrap().try_into().unwrap();
 
 	let x_max: usize = lines_vec.iter()
 								.map(|line| {if line.start.x < line.end.x {line.end.x} else {line.start.x}})
 								.max()
-								.unwrap().try_into().unwrap();
+								.unwrap().try_into().unwrap(); // try_into convert u32 into usize and panics if it doesn't fit.
 
 	let y_max: usize = lines_vec.iter()
 								.map(|line| {if line.start.y < line.end.y {line.end.y} else {line.start.y}})
 								.max()
 								.unwrap().try_into().unwrap();
 
-	(x_min, y_min, x_max, y_max)
+	(x_max, y_max)
 }
 
 fn filter_horizontal_and_vertical_lines(lines_vec: Vec<Line>) -> Vec<Line> {
@@ -101,6 +101,7 @@ fn draw_horizontal_line(diagram: &mut Vec<Vec<u8>>, line: &Line) {
 
 fn draw_vertical_line(diagram: &mut Vec<Vec<u8>>, line: &Line) {
 
+	//println!("line.start.x = {}", line.start.x);
 	let mut y_start: usize = line.start.y as usize;
 	let moves: usize = (line.start.y as isize - line.end.y as isize).abs() as usize;
 	if line.start.y > line.end.y {
@@ -113,6 +114,8 @@ fn draw_vertical_line(diagram: &mut Vec<Vec<u8>>, line: &Line) {
 	}
 }
 
+
+
 pub fn day05(filename: &str) {
 	
 	// Get input data
@@ -122,12 +125,10 @@ pub fn day05(filename: &str) {
 	let lines_vec: Vec<Line> = format_input_data(input_data);
 
 	// Get the minimum and maximum x and y coordinates to create a diagram (Vec<Vec<u8>>)
-	let (x_min, y_min, x_max, y_max): (usize, usize, usize, usize) = get_min_and_max_values(&lines_vec);
+	let (x_max, y_max): (usize, usize) = get_min_and_max_values(&lines_vec);
 
 	// Create the diagram, index using diagram[y][x]
-	let mut diagram: Vec<Vec<u8>> = vec![vec![0; x_max - x_min + 1]; y_max - y_min + 1];
-
-	// Make start coordinate smaller than end coordinate
+	let mut diagram: Vec<Vec<u8>> = vec![vec![0; x_max + 1]; y_max + 1];
 
 	// Filter horizontal and vertical lines
 	let lines_vec: Vec<Line> = filter_horizontal_and_vertical_lines(lines_vec);
