@@ -9,6 +9,7 @@ mod day03;
 mod	day04;
 mod day05;
 mod day06;
+mod day07;
 
 // Use submodules
 use read_lines::get_data_from_input_file;
@@ -18,6 +19,7 @@ use day03::day03;
 use day04::day04;
 use day05::day05;
 use day06::day06;
+use day07::day07;
 
 fn main() {
 	// day01("inputs/day01/part1_input");
@@ -27,6 +29,7 @@ fn main() {
 	// day04("inputs/day04/input_test");
 	// day04("inputs/day04/part1_input");
 	// day05("inputs/day05/part2_input"); // go into src code of day05, uncomment line 199 to get part1
-	day06("inputs/day06/part1_input");
+	// day06("inputs/day06/part1_input");
+	day07("inputs/day07/part1_input");
 	
 }
