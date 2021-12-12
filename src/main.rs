@@ -24,15 +24,14 @@ use day07::day07;
 use day08::day08;
 
 fn main() {
-	// day01("inputs/day01/part1_input");
-	// day02("inputs/day02/part1_input", "inputs/day02/part2_input");
-    // day03("inputs/day03/part1_input");
-	// day04("inputs/day04/part1_input");
-	// day04("inputs/day04/input_test");
-	// day04("inputs/day04/part1_input");
-	// day05("inputs/day05/part2_input"); // go into src code of day05, uncomment line 199 to get part1
-	// day06("inputs/day06/part1_input");
-	// day07("inputs/day07/part1_input");
-	day08("inputs/day08/test_input");
-	
+	day01("inputs/day01/part1_input");
+	day02("inputs/day02/part1_input", "inputs/day02/part2_input");
+    day03("inputs/day03/part1_input");
+	day04("inputs/day04/part1_input");
+	day04("inputs/day04/input_test");
+	day04("inputs/day04/part1_input");
+	day05("inputs/day05/part2_input"); // go into src code of day05, uncomment line 199 to get part1
+	day06("inputs/day06/part1_input");
+	day07("inputs/day07/part1_input");
+	day08("inputs/day08/part1_input");
 }
