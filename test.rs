@@ -55,19 +55,37 @@
 
 // }
 
+// fn main() {
+
+// 	let chars_vec: Vec<char> = vec!['c', 'd', 'e'];
+// 	let	chars_to_stay: Vec<char> = vec!['c', 'd'];
+
+// 	let result: bool = chars_to_stay.iter().any(|&c| c == 'd');
+
+// 	println!("\n{:?}", chars_vec);
+
+// 	println!("\n{:?}", chars_to_stay);
+
+
+// 	let result: Vec<char> = chars_vec.iter().cloned().filter(|chr| chars_to_stay.iter().any(|&c| c == *chr)).collect();
+
+// 	println!("result = {:?}", result);
+// }
+
+fn factorial(n: usize) -> usize {
+	
+	if n == 0 {
+		return 1;
+	}
+	return n * factorial(n - 1);
+}
+
 fn main() {
 
-	let chars_vec: Vec<char> = vec!['c', 'd', 'e'];
-	let	chars_to_stay: Vec<char> = vec!['c', 'd'];
+	let n: usize = 20;
 
-	let result: bool = chars_to_stay.iter().any(|&c| c == 'd');
+	let result: usize = factorial(n);
 
-	println!("\n{:?}", chars_vec);
+	println!("result = {}", result);
 
-	println!("\n{:?}", chars_to_stay);
-
-
-	let result: Vec<char> = chars_vec.iter().cloned().filter(|chr| chars_to_stay.iter().any(|&c| c == *chr)).collect();
-
-	println!("result = {:?}", result);
 }
