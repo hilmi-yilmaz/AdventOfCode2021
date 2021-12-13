@@ -108,7 +108,7 @@ fn parse_input_data(input_data: Vec<String>) -> Vec<Vec<u8>> {
 
 // }
 
-fn low_point_handler(parsed_data: &Vec<Vec<u8>>, low_points: &mut Vec<u8>, i: usize, j: usize) {
+fn low_point_handler(parsed_data: &Vec<Vec<u8>>, low_points: &mut Vec<(usize, usize)>, i: usize, j: usize) {
 	// if we are not on the edges
 	if i != 0 && i != parsed_data.len() - 1 && j != 0 && j != parsed_data[i].len() - 1 {
 		if 	parsed_data[i][j] < parsed_data[i + 1][j] && 
@@ -116,14 +116,14 @@ fn low_point_handler(parsed_data: &Vec<Vec<u8>>, low_points: &mut Vec<u8>, i: us
 			parsed_data[i][j] < parsed_data[i][j + 1] &&
 			parsed_data[i][j] < parsed_data[i][j - 1]
 		{
-			low_points.push(parsed_data[i][j]);
+			low_points.push((i,j));
 		}
 	}
 	else if i == 0 && j == 0 { // left top edge
 		if 	parsed_data[i][j] < parsed_data[i + 1][j] && 
 			parsed_data[i][j] < parsed_data[i][j + 1]
 		{
-			low_points.push(parsed_data[i][j]);
+			low_points.push((i,j));
 		}
 	}
 	else if i == 0 && j == parsed_data[i].len() - 1 { // right top edge
@@ -131,7 +131,7 @@ fn low_point_handler(parsed_data: &Vec<Vec<u8>>, low_points: &mut Vec<u8>, i: us
 			parsed_data[i][j] < parsed_data[i + 1][j - 1] &&
 			parsed_data[i][j] < parsed_data[i][j - 1]
 		{
-			low_points.push(parsed_data[i][j]);
+			low_points.push((i,j));
 		}
 	}
 	else if i == parsed_data.len() - 1 && j == 0 { // left bottom edge
@@ -139,7 +139,7 @@ fn low_point_handler(parsed_data: &Vec<Vec<u8>>, low_points: &mut Vec<u8>, i: us
 			parsed_data[i][j] < parsed_data[i - 1][j + 1] &&
 			parsed_data[i][j] < parsed_data[i][j + 1]
 		{
-			low_points.push(parsed_data[i][j]);
+			low_points.push((i,j));
 		}
 	}
 	else if i == parsed_data.len() - 1 && j == parsed_data[i].len() - 1 { // right bottom edge
@@ -147,7 +147,7 @@ fn low_point_handler(parsed_data: &Vec<Vec<u8>>, low_points: &mut Vec<u8>, i: us
 			parsed_data[i][j] < parsed_data[i - 1][j - 1] &&
 			parsed_data[i][j] < parsed_data[i][j - 1]
 		{
-			low_points.push(parsed_data[i][j]);
+			low_points.push((i,j));
 		}
 	}
 	else if i == 0 && j != 0 && j != parsed_data[i].len() - 1 {
@@ -155,7 +155,7 @@ fn low_point_handler(parsed_data: &Vec<Vec<u8>>, low_points: &mut Vec<u8>, i: us
 			parsed_data[i][j] < parsed_data[i][j + 1] &&
 			parsed_data[i][j] < parsed_data[i][j - 1]
 		{
-			low_points.push(parsed_data[i][j]);
+			low_points.push((i,j));
 		}
 	}
 	else if i == parsed_data.len() - 1 && j != 0 && j != parsed_data[i].len() - 1 { // bottom row
@@ -163,7 +163,7 @@ fn low_point_handler(parsed_data: &Vec<Vec<u8>>, low_points: &mut Vec<u8>, i: us
 			parsed_data[i][j] < parsed_data[i][j + 1] &&
 			parsed_data[i][j] < parsed_data[i][j - 1]
 		{
-			low_points.push(parsed_data[i][j]);
+			low_points.push((i,j));
 		}
 	}
 	else if i != 0 && i != parsed_data.len() - 1 && j == 0 {
@@ -171,7 +171,7 @@ fn low_point_handler(parsed_data: &Vec<Vec<u8>>, low_points: &mut Vec<u8>, i: us
 			parsed_data[i][j] < parsed_data[i + 1][j] &&
 			parsed_data[i][j] < parsed_data[i][j + 1]
 		{
-			low_points.push(parsed_data[i][j]);
+			low_points.push((i,j));
 		}
 	}
 	else if i != 0 && i != parsed_data.len() - 1 && j == parsed_data[i].len() - 1 {
@@ -179,12 +179,12 @@ fn low_point_handler(parsed_data: &Vec<Vec<u8>>, low_points: &mut Vec<u8>, i: us
 			parsed_data[i][j] < parsed_data[i + 1][j] &&
 			parsed_data[i][j] < parsed_data[i][j - 1]
 		{
-			low_points.push(parsed_data[i][j]);
+			low_points.push((i,j));
 		}	
 	}
 }
 
-fn find_low_points_recursive(parsed_data: &Vec<Vec<u8>>, low_points: &mut Vec<u8>, i: usize, j: usize) -> u8 {
+fn find_low_points_recursive(parsed_data: &Vec<Vec<u8>>, low_points: &mut Vec<(usize, usize)>, i: usize, j: usize) -> u8 {
 
 	// if end of traversion (end of rows)
 	if i == parsed_data.len() {
@@ -208,22 +208,56 @@ fn find_low_points_recursive(parsed_data: &Vec<Vec<u8>>, low_points: &mut Vec<u8
 
 }
 
+fn flood_fill(parsed_data: &mut Vec<Vec<u8>>, x: i32, y: i32, counter: &mut usize) {
+	
+	if x < 0 || x as usize >= parsed_data.len() || y < 0 || y as usize >= parsed_data[x as usize].len() {
+		return ;
+	}
+
+	if parsed_data[x as usize][y as usize] == 9 || parsed_data[x as usize][y as usize] == 10 {
+		return ;
+	} else {
+		*counter += 1;
+		parsed_data[x as usize][y as usize] = 10;
+	}
+
+	flood_fill(parsed_data, x + 1, y, counter);
+	flood_fill(parsed_data, x - 1, y, counter);
+	flood_fill(parsed_data, x, y + 1, counter);
+	flood_fill(parsed_data, x, y - 1, counter);
+
+}
+
 pub fn day09(filename: &str) {
 
 	let input_data: Vec<String> = get_data_from_input_file(filename);
-	let parsed_data: Vec<Vec<u8>> = parse_input_data(input_data);
-	let mut low_points: Vec<u8> = Vec::new();
+	let mut parsed_data: Vec<Vec<u8>> = parse_input_data(input_data);
+	let mut low_points_idx: Vec<(usize, usize)> = Vec::new();
 
-	find_low_points_recursive(&parsed_data, &mut low_points, 0, 0);
+	find_low_points_recursive(&parsed_data, &mut low_points_idx, 0, 0);
 
-	let answer: u32 = low_points.iter()
+	let mut low_points_values: Vec<u8> = Vec::new();
+
+	for idx in low_points_idx.iter() {
+		low_points_values.push(parsed_data[idx.0][idx.1]);
+	}
+
+	let answer: u32 = low_points_values.iter()
 									.map(|&nb| nb as u32 + 1)
 									.sum();
 
-	println!("Day09 part 2 answer = {}", answer);
+	println!("Day09 part 1 answer = {}", answer);
 
-	// // For part 1, find area that is enclosed by 9's.
+	// For part 1, find area that is enclosed by 9's.
+	let mut total_sum_basins: Vec<usize> = Vec::new();
+	for coordinate in low_points_idx.iter() {
+		let mut counter: usize = 0;
+		flood_fill(&mut parsed_data, coordinate.0 as i32, coordinate.1 as i32, &mut counter);
+		total_sum_basins.push(counter);
+	}
 
-	// // step 1: Get coordinates of low_points
-	// let coordinates_of_low_points: Vec<Vec<usize>> = Vec::new();
+	// Sort the array and only multipy last 3 elements.
+	total_sum_basins.sort();
+	let len: usize = total_sum_basins.len();
+	println!("Day09 part 2 answer = {}", total_sum_basins[len - 1] * total_sum_basins[len - 2] * total_sum_basins[len - 3]);
 }
